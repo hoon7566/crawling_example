@@ -9,7 +9,9 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 from time import sleep
-import sys, os
+import sys
+import os
+import platform
 import openpyxl
 
 import requests
@@ -26,10 +28,14 @@ def create_folder(directory):
 
 
 def get_exe_file_path():
-    # print('bundle dir is', os.path.abspath(__file__))
+    # print('bundle dir is', os.path.isabspath(__file__))
     # print('sys.argv[0] is', sys.argv[0])
     # print('sys.executable is', sys.executable)
     # print('os.getcwd is', os.getcwd())
+    if platform.system() == 'Windows':
+        split = '\\'
+    else:
+        split = '/'
 
     if getattr(sys, 'frozen', False):
         # we are running in a bundle
@@ -38,7 +44,8 @@ def get_exe_file_path():
     else:
         # we are running in a normal Python environment
         exe_dir = os.path.dirname(os.path.abspath(__file__))
-    return exe_dir
+
+    return exe_dir[:exe_dir.rfind(split)]
 
 
 def crawling_dailydrink():
